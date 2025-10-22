@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TaskZen – Smart Todo App
 
-## Getting Started
+**TaskZen AI** is a cutting-edge productivity platform that combines a smart calendar, beautiful UI, and AI-driven suggestions for seamless task management. Built with Next.js 15, shadcn/ui, MongoDB Atlas, and NextAuth for secure, scalable authentication.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Google Authentication:** Secure login, no password needed.
+- **Modern Dashboard:** Responsive split-panel design with a sticky calendar and animated todo/task panel.
+- **Calendar Scheduling:** Quickly assign, view, and filter todos by date. Visual date highlights for scheduled tasks.
+- **Advanced Filtering:** Search, priority, and status tabs to laser-focus your view.
+- **Statistics & Analytics:** Real-time totals, active/completed counters, and high-priority tracking.
+- **Optimistic UI & Animation:** Instant updates and framer-motion flourishes for delightful UX.
+- **Mobile-First & Accessible:** Fully responsive, colorblind-friendly palette, keyboard accessible.
+- **AI Integration Ready:** Designed for future productivity automation and smart reminders.
+- **Clean Code & Type Safety:** Modern Next.js 15 app directory, TypeScript, server actions, and shadcn/ui.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✨ Live Demo
 
-## Learn More
+🚨 _Add your deployment link here (Vercel or other)_  
+[taskzen-ai.vercel.app](https://your-production-url/)
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Tech Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Tech        | Purpose/Role                        |
+| ----------- | ----------------------------------- |
+| Next.js 15  | React Framework, App Router, SSR    |
+| shadcn/ui   | Modern UI components, theming       |
+| MongoDB Atlas | Database for tasks/users         |
+| NextAuth.js (Auth.js) | Authentication (Google OAuth) |
+| React Query | Optimistic UI & effective caching   |
+| Framer Motion | Animations/transitions            |
+| Vercel      | Zero-config deployment              |
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🧑‍💻 Contributing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+PRs welcome!

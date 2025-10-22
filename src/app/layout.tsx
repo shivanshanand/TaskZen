@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     "modern UI",
   ],
   openGraph: {
-    title: "TaskZen AI – Calendar-Powered Smart Todo App",
+    title: "TaskZen – Calendar-Powered Smart Todo App",
     description:
       "Boost productivity with TaskZen AI. Drag, drop, and schedule todos. Visualize progress, unlock streaks, and level up your workflow with a beautiful modern UI.",
     url: "https://your-domain.com",
