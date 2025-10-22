@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use server";
 
 import { revalidatePath } from "next/cache";
@@ -10,13 +12,12 @@ export async function getTodos(userId: string): Promise<Todo[]> {
   try {
     await connectDB();
 
-    const todos = await TodoModel.find({ userId })
+    const todos = (await TodoModel.find({ userId })
       .sort({ createdAt: -1 })
       .lean()
-      .exec(); // Add .exec() for better error handling
+      .exec()) as Array<Omit<Todo, "id"> & { _id: any }>;
 
-    // Convert MongoDB _id to string id
-    return todos.map((todo: any) => ({
+    return todos.map((todo) => ({
       ...todo,
       id: todo._id.toString(),
       _id: undefined,
@@ -53,15 +54,12 @@ export async function createTodo(
       updatedAt: new Date(todoDoc.updatedAt),
     };
 
-    // REMOVE revalidatePath - React Query handles cache updates
-    // revalidatePath('/dashboard');
-
     return {
       success: true,
       todo,
     };
   } catch (error) {
-    console.error("Failed to create todo:", error);
+    // console.error("Failed to create todo:", error);
     return {
       success: false,
       error: "Failed to create todo",
@@ -102,7 +100,7 @@ export async function updateTodo(
       todo,
     };
   } catch (error) {
-    console.error("Failed to update todo:", error);
+    // console.error("Failed to update todo:", error);
     return {
       success: false,
       error: "Failed to update todo",
@@ -117,11 +115,11 @@ export async function deleteTodo(
   try {
     await connectDB();
 
-    console.log("Deleting todo with ID:", id); // Debug log
+    // console.log("Deleting todo with ID:", id);
 
     const result = await TodoModel.findByIdAndDelete(id).exec();
 
-    console.log("Delete result:", result); // Debug log
+    // console.log("Delete result:", result);
 
     if (!result) {
       return { success: false, error: "Todo not found" };
@@ -129,7 +127,7 @@ export async function deleteTodo(
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to delete todo:", error);
+    // console.error("Failed to delete todo:", error);
     return {
       success: false,
       error: "Failed to delete todo",
@@ -167,7 +165,7 @@ export async function toggleTodo(
       todo,
     };
   } catch (error) {
-    console.error("Failed to toggle todo:", error);
+    // console.error("Failed to toggle todo:", error);
     return {
       success: false,
       error: "Failed to toggle todo",

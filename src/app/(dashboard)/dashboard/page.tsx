@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Search, Filter, LogOut, CalendarIcon, Flame } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
+import { Plus, Search, Filter, CalendarIcon, Flame } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -90,7 +91,7 @@ export default function DashboardPage() {
     const days = new Set(
       todos
         .filter((todo) => todo.dueDate)
-        .map((todo) => new Date(todo.dueDate).toDateString())
+        .map((todo) => new Date(todo.dueDate!).toDateString())
     );
     return Array.from(days).map((dateStr) => new Date(dateStr));
   }, [todos]);

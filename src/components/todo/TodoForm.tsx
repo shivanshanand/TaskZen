@@ -40,7 +40,7 @@ import type { CreateTodoInput } from "@/types/todo";
 const todoFormSchema = z.object({
   title: z.string().min(1, "Title is required").max(200, "Title too long"),
   description: z.string().optional(),
-  priority: z.enum(["low", "medium", "high"]).default("medium"),
+  priority: z.enum(["low", "medium", "high"]),
   dueDate: z.date().optional(),
   tags: z.string().optional(),
 });
@@ -88,7 +88,7 @@ export function TodoForm({ onSuccess }: TodoFormProps) {
           form.reset();
           onSuccess?.();
         },
-        onError: (error) => {
+        onError: () => {
           toast.error("Failed to create todo. Please try again.");
         },
       }

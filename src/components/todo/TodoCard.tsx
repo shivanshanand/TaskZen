@@ -120,10 +120,10 @@ export function TodoCard({ todo }: TodoCardProps) {
               </div>
             )}
 
-            {todo.tags.length > 0 && (
+            {(todo.tags?.length ?? 0) > 0 && (
               <div className="flex items-center gap-2 flex-wrap">
                 <Tag className="h-4 w-4 text-muted-foreground" />
-                {todo.tags.map((tag) => (
+                {(Array.isArray(todo.tags) ? todo.tags : []).map((tag) => (
                   <span
                     key={tag}
                     className="px-2 py-1 bg-secondary text-secondary-foreground rounded-md text-xs"

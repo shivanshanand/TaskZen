@@ -3,9 +3,9 @@ export interface Todo {
   title: string;
   description?: string;
   completed: boolean;
-  priority?: "low" | "medium" | "high";
+  priority: "low" | "medium" | "high";
   dueDate?: Date;
-  tags?: string[];
+  tags: string | string[];
   projectId?: string;
   createdAt: Date;
   updatedAt: Date;

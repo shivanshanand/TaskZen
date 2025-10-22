@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -73,7 +73,7 @@ export function EditTodoDialog({
       description: todo.description || "",
       priority: todo.priority,
       dueDate: todo.dueDate ? new Date(todo.dueDate) : undefined,
-      tags: todo.tags.join(", "),
+      tags: Array.isArray(todo.tags) ? todo.tags.join(", ") : todo.tags || "",
     },
   });
 
@@ -85,14 +85,17 @@ export function EditTodoDialog({
         description: todo.description || "",
         priority: todo.priority,
         dueDate: todo.dueDate ? new Date(todo.dueDate) : undefined,
-        tags: todo.tags.join(", "),
+        tags: Array.isArray(todo.tags) ? todo.tags.join(", ") : todo.tags || "",
       });
     }
   }, [open, todo, form]);
 
   async function onSubmit(values: EditTodoFormValues) {
     const tags = values.tags
-      ? values.tags.split(",").map((tag) => tag.trim())
+      ? values.tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean)
       : [];
 
     updateMutation.mutate(

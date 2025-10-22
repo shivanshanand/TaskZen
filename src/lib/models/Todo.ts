@@ -23,7 +23,7 @@ const TodoSchema = new Schema<Todo>(
     priority: {
       type: String,
       enum: ["low", "medium", "high"],
-      default: "medium",
+      required: true,
     },
 
     dueDate: {

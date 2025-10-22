@@ -45,7 +45,11 @@ export function useCreateTodo() {
 
       const tempTodo: Todo = {
         id: `temp-${Date.now()}`,
-        ...input,
+        title: input.title,
+        description: input.description,
+        priority: input.priority || "medium", // FIXED: Default priority
+        dueDate: input.dueDate,
+        projectId: input.projectId,
         completed: false,
         tags: input.tags || [],
         createdAt: new Date(),
@@ -70,7 +74,7 @@ export function useCreateTodo() {
       toast.error("Failed to create todo");
     },
 
-    onSuccess: (data, { userId }) => {
+    onSuccess: (data, {}) => {
       if (!data.success) {
         toast.error(data.error || "Failed to create todo");
       }
