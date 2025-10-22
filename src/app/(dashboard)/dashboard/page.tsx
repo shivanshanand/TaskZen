@@ -3,8 +3,18 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Search, Filter, CalendarIcon, Flame } from "lucide-react";
-import { useSession } from "next-auth/react";
+import {
+  Plus,
+  Search,
+  Filter,
+  CalendarIcon,
+  Flame,
+  User,
+  LogOut,
+  Settings,
+  ChevronDown,
+} from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +26,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -23,6 +41,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { TodoCard } from "@/components/todo/TodoCard";
 import { TodoForm } from "@/components/todo/TodoForm";
@@ -42,6 +61,23 @@ export default function DashboardPage() {
   // Use real user ID from session
   const userId = session?.user?.id || "";
   const { data: todos = [], isLoading, error } = useTodos(userId);
+
+  // Get user initials for avatar fallback
+  const getUserInitials = (name?: string | null) => {
+    if (!name) return "U";
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  // Handle signout
+  // In your dashboard component
+  const handleSignOut = async () => {
+    await signOut({ redirectTo: "/login" });
+  };
 
   // Filter and search logic
   const filteredTodos = useMemo(() => {
@@ -110,11 +146,11 @@ export default function DashboardPage() {
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         {/* Hero header with brand and streak */}
         <motion.div
-          className="mb-8 flex flex-col md:flex-row md:justify-between md:items-center gap-8 md:gap-0"
+          className="mb-8 flex flex-col md:flex-row md:justify-between md:items-start gap-6"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div>
+          <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
               <CalendarIcon className="text-blue-600 h-7 w-7" />
               <h1 className="text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -132,18 +168,82 @@ export default function DashboardPage() {
               </span>
             </p>
           </div>
-          {/* Mini streak/ai callout or stats - edit as desired */}
-          <div className="rounded-xl bg-gradient-to-br from-yellow-100 via-blue-50 to-purple-50 dark:from-blue-900 dark:to-purple-900 px-6 py-3 shadow flex flex-col md:items-end items-center">
-            <span className="flex gap-1 items-center text-lg font-bold text-blue-700 dark:text-purple-200">
-              <Flame className="text-orange-500" /> Productivity streak:{" "}
-              <span className="ml-2">
-                {stats.completed}/{stats.total}
-              </span>{" "}
-              tasks done!
-            </span>
-            <span className="text-xs mt-1 text-blue-500">
-              Keep going to unlock new badges!
-            </span>
+
+          {/* User Profile Dropdown and Streak Stats */}
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            {/* Mini streak/ai callout */}
+            <div className="rounded-xl bg-gradient-to-br from-yellow-100 via-blue-50 to-purple-50 dark:from-blue-900 dark:to-purple-900 px-6 py-3 shadow flex flex-col items-center md:items-end">
+              <span className="flex gap-1 items-center text-lg font-bold text-blue-700 dark:text-purple-200">
+                <Flame className="text-orange-500" /> Productivity streak:{" "}
+                <span className="ml-2">
+                  {stats.completed}/{stats.total}
+                </span>{" "}
+                tasks done!
+              </span>
+              <span className="text-xs mt-1 text-blue-500">
+                Keep going to unlock new badges!
+              </span>
+            </div>
+
+            {/* User Profile Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="relative h-12 rounded-full flex items-center gap-2 px-3 hover:bg-white/50 dark:hover:bg-slate-800/50 border border-transparent hover:border-blue-200 dark:hover:border-slate-700 transition-all"
+                >
+                  <Avatar className="h-9 w-9">
+                    <AvatarImage
+                      src={session?.user?.image || undefined}
+                      alt={session?.user?.name || "User"}
+                    />
+                    <AvatarFallback className="bg-gradient-to-br from-blue-600 to-purple-600 text-white text-sm font-bold">
+                      {getUserInitials(session?.user?.name)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-64 rounded-xl shadow-lg border border-blue-100 dark:border-slate-700"
+                align="end"
+                forceMount
+              >
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-2 p-2">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-12 w-12">
+                        <AvatarImage
+                          src={session?.user?.image || undefined}
+                          alt={session?.user?.name || "User"}
+                        />
+                        <AvatarFallback className="bg-gradient-to-br from-blue-600 to-purple-600 text-white font-bold">
+                          {getUserInitials(session?.user?.name)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col space-y-1">
+                        <p className="text-sm font-semibold leading-none">
+                          {session?.user?.name || "User"}
+                        </p>
+                        <p className="text-xs leading-none text-muted-foreground">
+                          {session?.user?.email}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="cursor-pointer text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400 focus:bg-red-50 dark:focus:bg-red-950/20 py-2.5"
+                  onClick={handleSignOut}
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Sign out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </motion.div>
 
